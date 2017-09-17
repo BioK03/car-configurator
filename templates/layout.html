@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8"/>
+        <meta content="initial-scale=1, width=device-width" name="viewport"/>
+        <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="{{ url_for('static', filename='libraries/MDB Pro/css/bootstrap.min.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('static', filename='libraries/MDB Pro/css/mdb.min.css') }}" rel="stylesheet"/>
+        <link href="{{ url_for('static', filename='styles/styles.css') }}" rel="stylesheet"/>
+        {% block stylesheets %}{% endblock %}
+
+
+
+        <title>Car Configurator</title>
+
+    </head>
+
+    <body class="pt-3">
+
+        <nav class="navbar fixed-top navbar-light bg-faded white">
+
+            <a class="navbar-brand text-center col-12" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" height="50" class="d-inline-block align-top" alt="">
+            </a>
+            <a class="title-container row" href="{{ url_for('index') }}">
+                <h1 class="col-6 text-right">
+                    BMW
+                </h1>
+                <h3 class="col-6 text-left">
+                    <span class="first-title">Sheer</span>
+                    <span class="second-title">Driving</span>
+                    <span class="third-title">Pleasure</span>
+                </h3>
+            </a>
+
+        </nav>
+
+        <div class="container-fluid">
+            {% block main %}{% endblock %}
+        </div>
+
+
+
+        <footer class="page-footer center-on-small-only mdb-color lighten-3">
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-12">
+                        <p>Some content from this website belongs to <a href="https://www.bmw.com/en/home.html">BMW</a>,
+                        used here in compliance with fair-use and French
+                        <a href="https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006069414&idArticle=LEGIARTI000033219336">L.122-5 from Code de propriété intellectuelle</a></p>
+                        <p>Entirely designed and developed by <a href="http://chbe.fr">Bertrand Choubert</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+
+        <script src="{{ url_for('static', filename='libraries/MDB Pro/js/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libraries/MDB Pro/js/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libraries/MDB Pro/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='libraries/MDB Pro/js/mdb.min.js') }}"></script>
+
+        {% block javascripts %}{% endblock %}
+
+    </body>
+
+</html>

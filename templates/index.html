@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+<section class="section extra-margins text-center pb-3">
+
+    <h2 class="section-heading h1 pt-5">Choose your car</h2>
+
+    <div class="row">
+        {% for car in cars %}
+            <div class="col-md-6 mb-r">
+                <div class="view overlay hm-white-slight z-depth-1-half mb-2">
+                    <img src="{{ url_for('static', filename=car.picture) }}" class="img-fluid" alt="{{car.name}}">
+                    <a href="{{ url_for('carConfig', car_id=car.id) }}">
+                        <div class="mask"></div>
+                    </a>
+                </div>
+
+                <h4 class="my-3" style="color: {{car.color}}">{{car.name}}</h4>
+                <p>{{car.description}}</p>
+                <a class="btn btn-rounded" style="background-color: {{car.color}}" href="{{ url_for('carConfig', car_id=car.id) }}">
+                    <i class="fa fa-gears" aria-hidden="true"></i> CONFIGURE YOUR {{car.name}}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

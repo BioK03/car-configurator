@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block stylesheets %}
+<style type="text/css">
+
+    /* Dynamic CSS code */
+    input[type=range] + .thumb, input[type=range] + .thumb .value, input[type=range]::-webkit-slider-thumb {
+        background-color: {{car.color}};
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+
+<section class="section extra-margins text-center pb-3">
+
+    <h2 class="section-heading h1 pt-5">The configuration of your {{car.name}}</h2>
+
+    <div class="col-12">
+        You can access permanently this configuration via <a href="{{url_for("order", order_id=order.id)}}">{{url_for("order", order_id=order.id)}}</a><br/>
+        <div class="row">
+            <div class="carSupContainer col-6">
+                <div class="carContainer" data-rotation="front">
+                    <img src="{{ url_for('static', filename=car.frontPicture) }}" alt="Front {{car.name}}" data-type="car" />
+                </div>
+                <div class="carContainer d-none" data-rotation="side">
+                    <img src="{{ url_for('static', filename=car.sidePicture) }}" alt="Side {{car.name}}" data-type="car" />
+                </div>
+                <div class="carContainer d-none" data-rotation="rear">
+                    <img src="{{ url_for('static', filename=car.rearPicture) }}" alt="Rear {{car.name}}" data-type="car" />
+                </div>
+
+                <span id="spanRange">
+                    <input id="slide" type="range" list="tickmarks" min="0" max="2" value="0" />
+                </span>
+                <span id="spanRangePictures">
+                    <img src="{{ url_for('static', filename=car.frontPicture) }}" onclick="$('#slide').val(0);$('#slide').trigger('change');" alt="Front {{car.name}}" />
+                    <img src="{{ url_for('static', filename=car.sidePicture) }}" onclick="$('#slide').val(1);$('#slide').trigger('change');" alt="Side {{car.name}}" />
+                    <img src="{{ url_for('static', filename=car.rearPicture) }}" onclick="$('#slide').val(2);$('#slide').trigger('change');" alt="Rear {{car.name}}" />
+                </span>
+                <h5 class="mb-0 text-left resumeDiv" style="background-color: {{car.color}}" data-base-price="{{car.price}}" data-base-name="{{car.name}}">
+                    Total Price: <span id="spanTotalPrice">{{'%0.2f'| format(car.price|float)}} €</span>
+                </h5>
+            </div>
+            <div class="col-6">
+                <table class="table mt-4">
+                    <tr>
+                        <td colspan="2">{{car.name}}</td>
+                        <td>{{'%0.2f'| format(car.price|float)}} €</td>
+                    </tr>
+                    {% for optionCategory in optionCategories %}
+                        {% for option in options if option.optionCategoryId == optionCategory.id %}
+                            {% for optionValue in optionValues if optionValue.optionId == option.id %}
+                                {% for orderOptionValue in orderOptionValues if orderOptionValue.optionValueId == optionValue.id %}
+                                    <tr
+                                    class="option"
+                                    data-type="{{option.type}}"
+                                    data-price="{{'%0.2f'| format(optionValue.price|float)}}"
+                                    {% if optionValue.frontPicture != "" %} data-front-picture="{{ url_for('static', filename=optionValue.frontPicture) }}" {% endif %}
+                                    {% if optionValue.sidePicture != "" %} data-side-picture="{{ url_for('static', filename=optionValue.sidePicture) }}" {% endif %}
+                                    {% if optionValue.rearPicture != "" %} data-rear-picture="{{ url_for('static', filename=optionValue.rearPicture) }}" {% endif %}>
+                                        <td>{{option.name}}</td>
+                                        <td>{{optionValue.name}}</td>
+                                        <td>+{{'%0.2f'| format(optionValue.price|float)}} €</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+    (function(){
+        $("#slide").on("change", function(){
+            var rotations = ["front", "side", "rear"];
+            var rotation = rotations[$("#slide").val()];
+
+            $(".carContainer").removeClass("d-block").addClass("d-none");
+            $(".carContainer[data-rotation="+rotation+"]").removeClass("d-none").addClass("d-block");
+        });
+    })();
+    (function(){
+        $(".option").each(function(){
+            $type = $(this).attr("data-type");
+            $("img[data-type="+$type+"]").remove();
+
+            if (typeof $(this).attr("data-front-picture") !== typeof undefined && $(this).attr("data-front-picture") !== false) {
+                $(".carContainer[data-rotation=front]").append("<img src='"+$(this).attr("data-front-picture") +"' data-type='"+$type+"'/>");
+            }
+            if (typeof $(this).attr("data-side-picture") !== typeof undefined && $(this).attr("data-side-picture") !== false) {
+                $(".carContainer[data-rotation=side]").append("<img src='"+$(this).attr("data-side-picture") +"' data-type='"+$type+"'/>");
+            }
+            if (typeof $(this).attr("data-rear-picture") !== typeof undefined && $(this).attr("data-rear-picture") !== false) {
+                $(".carContainer[data-rotation=rear]").append("<img src='"+$(this).attr("data-rear-picture") +"' data-type='"+$type+"'/>");
+            }
+        });
+
+        $totalPrice = parseFloat($(".resumeDiv").attr("data-base-price"));
+
+        $(".option").each(function(){
+            $totalPrice += parseFloat($(this).attr("data-price"));
+        });
+
+        $(".resumeDiv #spanTotalPrice").html($totalPrice+".00 €");
+    })();
+
+
+
+    </script>
+
+{% endblock %}
