@@ -2,7 +2,7 @@ autopep8==1.3.2
 backports.shutil-get-terminal-size==1.0.0
 backports.shutil-which==3.5.1
 cairocffi==0.8.0
-CairoSVG==2.0.3
+CairoSVG==2.5.1
 certifi==2017.7.27.1
 cffi==1.10.0
 chardet==3.0.4
